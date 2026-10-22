@@ -43,6 +43,7 @@ export function HackathonBrowser({ data, postCounts }: { data: HackathonsRespons
   const themes = useMemo(() => topThemes(data.hackathons), [data.hackathons]);
   const companies = useMemo(() => companyCounts(data.hackathons), [data.hackathons]);
   const results = useMemo(() => applyFilters(data.hackathons, filters, at), [data.hackathons, filters, at]);
+  const myanmar = useMemo(() => data.hackathons.filter((h) => h.myanmar), [data.hackathons]);
 
   const stats = useMemo(() => {
     const list = data.hackathons;
@@ -89,7 +90,7 @@ export function HackathonBrowser({ data, postCounts }: { data: HackathonsRespons
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl dark:text-white">Find your next hackathon</h1>
           <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-            Live from Devpost, MLH, Cerebral Valley, lablab.ai and Luma, refreshed every 30 minutes.
+            Live from Devpost, MLH, Cerebral Valley, lablab.ai and Luma, with Myanmar first. Re-scraped every day.
           </p>
         </div>
         <div className="grid grid-cols-4 gap-2 sm:gap-3">
@@ -113,7 +114,33 @@ export function HackathonBrowser({ data, postCounts }: { data: HackathonsRespons
         </div>
       </header>
 
+      {!filters.myanmar && (
+        <MyanmarSection count={myanmar.length} onShowAll={() => update({ ...DEFAULT_FILTERS, myanmar: true })}>
+          {myanmar.slice(0, 3).map((h) => (
+            <HackathonCard
+              key={h.id}
+              h={h}
+              tracked={tracked[h.id]}
+              now={now}
+              postCount={postCounts[h.id]}
+              onSave={save}
+              onRemove={remove}
+              onStatus={setStatus}
+            />
+          ))}
+        </MyanmarSection>
+      )}
+
       <Filters value={filters} onChange={update} themes={themes} companies={companies} />
+
+      {filters.myanmar && (
+        <p className="flex items-center justify-between gap-3 rounded-xl border border-amber-200 bg-amber-50 px-4 py-2.5 text-sm text-amber-900 dark:border-amber-900/60 dark:bg-amber-950/30 dark:text-amber-200">
+          <span>Showing only hackathons in Myanmar.</span>
+          <button onClick={() => update({ ...filters, myanmar: false })} className="font-medium underline underline-offset-2">
+            Show all
+          </button>
+        </p>
+      )}
 
       {data.errors.length > 0 && (
         <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-2.5 text-sm text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300">
@@ -172,5 +199,45 @@ export function HackathonBrowser({ data, postCounts }: { data: HackathonsRespons
         </div>
       )}
     </div>
+  );
+}
+
+const FACEBOOK_SEARCH = "https://www.facebook.com/search/posts?q=hackathon%20myanmar";
+
+/** Myanmar hackathons, pinned above everything else. */
+function MyanmarSection({ count, onShowAll, children }: { count: number; onShowAll: () => void; children: React.ReactNode }) {
+  return (
+    <section className="space-y-3 rounded-2xl border border-amber-200 bg-gradient-to-br from-amber-50 via-white to-emerald-50 p-4 sm:p-5 dark:border-amber-900/50 dark:from-amber-950/30 dark:via-zinc-900 dark:to-emerald-950/20">
+      <div className="flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <h2 className="font-semibold text-zinc-900 dark:text-white">
+            <span aria-hidden>🇲🇲</span> Hackathons in Myanmar
+          </h2>
+          <p className="text-xs text-zinc-500 dark:text-zinc-400">
+            {count > 0
+              ? `${count} upcoming, checked every day`
+              : "None listed online right now. Checked every day."}
+          </p>
+        </div>
+        {count > 3 && (
+          <button onClick={onShowAll} className="text-sm font-medium text-indigo-600 hover:underline dark:text-indigo-400">
+            See all {count} →
+          </button>
+        )}
+      </div>
+      {count > 0 && <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-3">{children}</div>}
+      <p className="text-xs text-zinc-500 dark:text-zinc-400">
+        Most Myanmar hackathons (like KBZPay&apos;s AppCube bootcamp) are only announced on Facebook, which can&apos;t be
+        scraped.{" "}
+        <a href={FACEBOOK_SEARCH} target="_blank" rel="noopener noreferrer" className="font-medium text-indigo-600 hover:underline dark:text-indigo-400">
+          Search Facebook
+        </a>{" "}
+        and{" "}
+        <a href="/saved#add" className="font-medium text-indigo-600 hover:underline dark:text-indigo-400">
+          add one from its link
+        </a>{" "}
+        to get countdowns and reminders.
+      </p>
+    </section>
   );
 }

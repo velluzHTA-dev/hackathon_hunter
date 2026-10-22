@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { detectCompanies } from "@/lib/companies";
+import { isMyanmar } from "@/lib/myanmar";
 import { safeUrl } from "@/lib/safeUrl";
 import type { Hackathon, Mode } from "@/lib/types";
 
@@ -41,6 +42,7 @@ export function AddFromLink({ onAdd, onClose }: { onAdd: (h: Hackathon) => void;
       participants: null,
       organizer: null,
       companies: detectCompanies({ title, organizer: null }),
+      myanmar: isMyanmar({ title, location: form.location }),
     });
     setForm(EMPTY);
     onClose();

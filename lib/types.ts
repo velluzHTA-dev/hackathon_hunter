@@ -21,10 +21,12 @@ export interface Hackathon {
   organizer: string | null;
   /** Big tech companies running or sponsoring it, e.g. ["Google", "Meta"]. Filled in by the aggregator. */
   companies: string[];
+  /** Takes place in Myanmar. Filled in by the aggregator. */
+  myanmar: boolean;
 }
 
-/** What each source returns, before the aggregator detects companies. */
-export type RawHackathon = Omit<Hackathon, "companies">;
+/** What each source returns, before the aggregator detects companies and Myanmar. */
+export type RawHackathon = Omit<Hackathon, "companies" | "myanmar">;
 
 export interface HackathonsResponse {
   hackathons: Hackathon[];

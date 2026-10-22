@@ -9,6 +9,7 @@ export interface FilterState {
   source: Source | "all";
   minPrize: number;
   themes: string[];
+  myanmar: boolean; // takes place in Myanmar
   bigTech: boolean; // run or sponsored by any big tech company
   companies: string[]; // run or sponsored by one of these
   closingSoon: boolean; // deadline within 7 days
@@ -24,6 +25,7 @@ export const DEFAULT_FILTERS: FilterState = {
   source: "all",
   minPrize: 0,
   themes: [],
+  myanmar: false,
   bigTech: false,
   companies: [],
   closingSoon: false,
@@ -46,6 +48,7 @@ export function filtersFromParams(p: URLSearchParams): FilterState {
     source: pick("source", SOURCES, "all"),
     minPrize: Math.max(0, Number(p.get("minPrize")) || 0),
     themes: p.get("themes")?.split(",").filter(Boolean) ?? [],
+    myanmar: p.get("mm") === "1",
     bigTech: p.get("bigtech") === "1",
     companies: p.get("co")?.split(",").filter(Boolean) ?? [],
     closingSoon: p.get("closing") === "1",
@@ -63,6 +66,7 @@ export function filtersToParams(f: FilterState): URLSearchParams {
   if (f.source !== "all") p.set("source", f.source);
   if (f.minPrize > 0) p.set("minPrize", String(f.minPrize));
   if (f.themes.length) p.set("themes", f.themes.join(","));
+  if (f.myanmar) p.set("mm", "1");
   if (f.bigTech) p.set("bigtech", "1");
   if (f.companies.length) p.set("co", f.companies.join(","));
   if (f.closingSoon) p.set("closing", "1");
@@ -85,6 +89,7 @@ export function applyFilters(list: Hackathon[], f: FilterState, now: number): Ha
     if (f.source !== "all" && h.source !== f.source) return false;
     if (f.minPrize > 0 && (h.prizeUsd ?? 0) < f.minPrize) return false;
     if (f.themes.length && !f.themes.some((t) => h.themes.includes(t))) return false;
+    if (f.myanmar && !h.myanmar) return false;
     if (f.bigTech && h.companies.length === 0) return false;
     if (f.companies.length && !f.companies.some((c) => h.companies.includes(c))) return false;
     if (f.closingSoon) {

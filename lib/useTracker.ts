@@ -2,6 +2,7 @@
 
 import { useCallback, useSyncExternalStore } from "react";
 import { detectCompanies } from "./companies";
+import { isMyanmar } from "./myanmar";
 import { safeUrl } from "./safeUrl";
 import { STATUSES, type Hackathon, type Mode, type Source, type TrackedItem, type TrackStatus } from "./types";
 
@@ -76,6 +77,7 @@ function sanitizeImport(data: unknown): Tracked {
         participants: typeof h.participants === "number" && Number.isFinite(h.participants) ? h.participants : null,
         organizer: str(h.organizer),
         companies: detectCompanies({ title, organizer: str(h.organizer) }),
+        myanmar: isMyanmar({ title, location: str(h.location, 200) ?? "" }),
       },
     };
   }

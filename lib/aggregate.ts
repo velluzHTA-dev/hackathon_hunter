@@ -1,9 +1,10 @@
 import { detectCompanies } from "./companies";
+import { isMyanmar } from "./myanmar";
 import { safeUrl } from "./safeUrl";
 import { fetchCerebralValley } from "./sources/cerebralvalley";
 import { fetchDevpost } from "./sources/devpost";
 import { fetchLablab } from "./sources/lablab";
-import { fetchLuma } from "./sources/luma";
+import { fetchLuma, fetchLumaMyanmar } from "./sources/luma";
 import { fetchMlh } from "./sources/mlh";
 import type { Hackathon, HackathonsResponse, RawHackathon, Source } from "./types";
 
@@ -15,6 +16,7 @@ const SOURCES: [Source, () => Promise<RawHackathon[]>][] = [
   ["mlh", fetchMlh],
   ["lablab", fetchLablab],
   ["luma", fetchLuma],
+  ["luma", fetchLumaMyanmar],
 ];
 
 const titleKey = (t: string) => t.toLowerCase().replace(/[^a-z0-9]/g, "");
@@ -43,7 +45,7 @@ export async function getHackathons(): Promise<HackathonsResponse> {
   const hackathons: Hackathon[] = [...seen.values()]
     // Drop anything that has already ended.
     .filter((h) => !h.endDate || new Date(h.endDate).getTime() >= now)
-    .map((h) => ({ ...h, companies: detectCompanies(h) }))
+    .map((h) => ({ ...h, companies: detectCompanies(h), myanmar: isMyanmar(h) }))
     .sort((a, b) => (a.deadline ?? "9").localeCompare(b.deadline ?? "9"));
 
   return { hackathons, errors, fetchedAt: new Date().toISOString() };

@@ -38,6 +38,8 @@ Bookmarks are stored in your browser's `localStorage`. They aren't synced betwee
 
 Reddit rate-limits hard, so it's fetched in a single request and cached for 30 minutes. If it fails, the Social page shows the error and the rest of the app is unaffected.
 
+**Refresh schedule:** pages are re-scraped at most every 30 minutes when someone visits. On Vercel, a daily cron job (`vercel.json`, 00:00 UTC) also calls `GET /api/cron/refresh`, which clears the cache and re-scrapes everything even if nobody has visited. That route needs the `CRON_SECRET` environment variable; Vercel sends it automatically, and any other caller gets a 401.
+
 `GET /api/hackathons` returns the merged list; `GET /api/social` returns the classified Reddit posts. If one source fails, the other still loads and the UI says which one is down.
 Duplicates (same title on both sites) keep the Devpost version because it carries prize and registration data.
 
