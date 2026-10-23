@@ -35,7 +35,7 @@ export const DEFAULT_FILTERS: FilterState = {
 };
 
 const MODES = ["all", "online", "in-person", "hybrid"];
-const SOURCES = ["all", "devpost", "mlh", "cerebralvalley", "lablab", "luma"];
+const SOURCES = ["all", "devpost", "mlh", "cerebralvalley", "lablab", "luma", "spaceapps"];
 const SORTS = ["deadline", "prize", "participants", "newest"];
 
 export function filtersFromParams(p: URLSearchParams): FilterState {

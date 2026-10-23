@@ -90,7 +90,7 @@ export function HackathonBrowser({ data, postCounts }: { data: HackathonsRespons
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-zinc-900 sm:text-3xl dark:text-white">Find your next hackathon</h1>
           <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">
-            Live from Devpost, MLH, Cerebral Valley, lablab.ai and Luma, with Myanmar first. Re-scraped every day.
+            Live from Devpost, MLH, Cerebral Valley, lablab.ai, Luma and NASA Space Apps, with Myanmar first. Re-scraped every day.
           </p>
         </div>
         <div className="grid grid-cols-4 gap-2 sm:gap-3">

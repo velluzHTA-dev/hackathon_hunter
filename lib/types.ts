@@ -1,5 +1,5 @@
 /** "manual" = added by the user from a link (e.g. a LinkedIn or Facebook post). */
-export type Source = "devpost" | "mlh" | "cerebralvalley" | "lablab" | "luma" | "manual";
+export type Source = "devpost" | "mlh" | "cerebralvalley" | "lablab" | "luma" | "spaceapps" | "manual";
 export type Mode = "online" | "in-person" | "hybrid";
 
 export interface Hackathon {

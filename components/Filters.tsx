@@ -179,6 +179,7 @@ export function Filters({ value: f, onChange, themes, companies }: Props) {
                 <option value="cerebralvalley">Cerebral Valley</option>
                 <option value="lablab">lablab.ai</option>
                 <option value="luma">Luma</option>
+                <option value="spaceapps">NASA Space Apps</option>
               </select>
             </div>
             <div>

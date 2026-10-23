@@ -6,6 +6,7 @@ import { fetchDevpost } from "./sources/devpost";
 import { fetchLablab } from "./sources/lablab";
 import { fetchLuma, fetchLumaMyanmar } from "./sources/luma";
 import { fetchMlh } from "./sources/mlh";
+import { fetchSpaceApps } from "./sources/spaceapps";
 import type { Hackathon, HackathonsResponse, RawHackathon, Source } from "./types";
 
 // Listed in order of preference when the same hackathon appears on several sites:
@@ -17,6 +18,7 @@ const SOURCES: [Source, () => Promise<RawHackathon[]>][] = [
   ["lablab", fetchLablab],
   ["luma", fetchLuma],
   ["luma", fetchLumaMyanmar],
+  ["spaceapps", fetchSpaceApps],
 ];
 
 const titleKey = (t: string) => t.toLowerCase().replace(/[^a-z0-9]/g, "");

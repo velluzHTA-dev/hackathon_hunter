@@ -20,6 +20,7 @@ export const COMPANIES: { name: string; pattern: RegExp }[] = [
   { name: "ByteDance", pattern: /\b(bytedance|tiktok)\b/i },
   { name: "Samsung", pattern: /\bsamsung\b/i },
   { name: "Salesforce", pattern: /\bsalesforce\b/i },
+  { name: "NASA", pattern: /\b(nasa|space apps)\b/i },
 ];
 
 // Local student and community chapters carry a company's name but aren't run by it.

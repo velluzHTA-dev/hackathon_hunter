@@ -13,6 +13,7 @@ const SOURCE_NAMES: Partial<Record<Hackathon["source"], string>> = {
   cerebralvalley: "Cerebral Valley",
   lablab: "lablab.ai",
   luma: "Luma",
+  spaceapps: "NASA Space Apps",
 };
 
 // Sources whose organizer field is a readable list of names worth showing.
